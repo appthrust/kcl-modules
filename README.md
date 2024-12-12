@@ -8,14 +8,9 @@ This is a monorepo containing useful KCL modules that help you write better KCL 
 
 A module that helps you work with file paths safely and consistently. [Learn more](./filepath/README.md)
 
-## Installation
+### crossplane_function_kcl_utils
 
-Each module can be installed using the KCL package manager. For example:
-
-```bash
-# Install filepath module
-kcl mod add oci://ghcr.io/appthrust/kcl/filepath
-```
+A module that provides type-safe utilities for writing Crossplane Functions in KCL. [Learn more](./crossplane_function_kcl_utils/README.md)
 
 ## Contributing
 
