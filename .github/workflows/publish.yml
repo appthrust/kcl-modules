@@ -1,0 +1,35 @@
+name: Publish to npm
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "**.mod"
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v27
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: nicknovitski/nix-develop@v1
+      - uses: tj-actions/changed-files@v41
+        id: changed-files
+      - run: kcl registry login -u ${{ github.actor }}} -p ${{ secrets.GITHUB_TOKEN }} ghcr.io
+      - name: Publish to ghcr.io
+        run: |
+          if echo "${{ steps.changed-files.outputs.all_changed_files }}" | grep -q 'kcl.mod'; then
+            for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+              if [[ "$file" != *"/kcl.mod" ]]; then
+                continue
+              fi
+              PKG_PATH=$(dirname $file)
+              PKG_NAME=$(basename $PKG_PATH)
+              pushd $PKG_PATH
+              kcl mod push oci://ghcr.io/$GITHUB_REPOSITORY_OWNER/kcl/$PKG_NAME
+              popd
+            done
+          fi
