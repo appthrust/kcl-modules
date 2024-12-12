@@ -45,13 +45,21 @@ This project and everyone participating in it is governed by our [Code of Conduc
 
 ## Adding a New Module
 
-1. Create a new directory for your module
-2. Include:
-   - README.md with documentation
-   - kcl.mod file
-   - Source code files
-   - Test files
-3. Update the top-level README.md to include your module
+1. Create a new directory for your module:
+   ```bash
+   mkdir <module_name>
+   cd <module_name>
+   kcl mod init
+   ```
+   Note: Choose a descriptive name for your module using snake_case format (e.g., `string_utils`, `http_client`).
+2. Implement your module with the following structure:
+   - Source code files (`.k` extension)
+   - Test files (with `_test.k` suffix)
+   - `README.md` with comprehensive documentation
+   - `kcl.mod` file for module configuration
+3. Add your module to the main project:
+   - Update the top-level `README.md` to include your module
+   - Ensure all documentation is clear and complete
 
 ## Testing
 
