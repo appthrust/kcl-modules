@@ -49,3 +49,41 @@ schema Params:
 ```
 
 Note: A composed resource can be a managed resource, ProviderConfig, composite resource, or any other Crossplane resource.
+
+## Using in Crossplane Composition
+
+Here's an example of how to use this package in a Crossplane Composition:
+
+```yaml
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: some-composition.example.com
+spec:
+  compositeTypeRef:
+    apiVersion: example.com/v1alpha1
+    kind: SomeKind
+  mode: Pipeline
+  pipeline:
+  - functionRef:
+      name: function-kcl
+    input:
+      apiVersion: krm.kcl.dev/v1alpha1
+      kind: KCLInput
+      spec:
+        source: |
+          import crossplane_function_kcl_utils as utils
+
+          # Get type-safe params
+          params = utils.get_params()
+          # Access params with IDE support
+          print(params.oxr)
+          print(params.ocds)
+          print(params.dxr)
+          print(params.dcds)
+          print(params.ctx)
+          print(params.extraResources)
+          # Omit other composite logics.
+        # Add dependencies to use crossplane_function_kcl_utils
+        dependencies: crossplane_function_kcl_utils = { oci = "oci://ghcr.io/appthrust/kcl/crossplane_function_kcl_utils", tag = "0.0.1" }
+    step: print-params
